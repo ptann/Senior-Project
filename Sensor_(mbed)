@@ -1,0 +1,31 @@
+#include "mbed.h"
+#include "SRF05.h"
+
+DigitalOut myled1(LED1);
+SRF05 srf(p13, p14);
+PwmOut PWM1(p21);
+
+int main() { 
+       wait (2);
+        if(srf.read()<=10) {  
+        myled1 = 1;      
+        wait(0.2); 
+        for(;;)
+   {
+   PWM1.period(0.010);     //pulse width period
+   PWM1=(0.5);               //duty cycle
+   wait(3.0);   
+   PWM1.period(0.000);     //pulse width period
+   PWM1=(0.5);               //duty cycle
+   wait(0.5);
+   PWM1.period(0.010);     //pulse width period
+   PWM1=(0.1);               //duty cycle
+   wait(3.0);  
+   PWM1.period(0.000);     //pulse width period
+   PWM1=(0.5);               //duty cycle
+   wait(0.5);
+   }
+        
+    } 
+} 
+
