@@ -1,0 +1,50 @@
+#include "mbed.h"
+#include "Servo.h"
+
+Servo myservo(p21);
+Servo myservo2(p21);
+int i;
+extern "C" void mbed_reset();
+void delay(int del);
+void spin(int a);
+void spin2(int b);
+
+int main() {    
+i =0;
+for(;;){
+
+       spin(1);
+       delay (2000);
+       myservo.period =0;
+       spin2(0);
+       delay (2000);
+       //i=i+1;
+       //mbed_reset();
+       //exit(0);
+       //return 0;
+       //spin(0);
+       //i=i-1;
+       //mbed_reset();
+        //exit(0);
+        return 0;
+
+       }
+}
+void delay(int del){ // delay for 'del' msecs
+   int i,j;
+   for(i=0; i<del; i++)
+      for(j=0; j<2000; j++);
+}
+
+void spin(int a)
+{
+   myservo = a;
+   //wait(1.0);
+   exit(0);
+   }
+   void spin2(int b)
+{
+   myservo2 = b;
+   //wait(1.0);
+   exit(0);
+   }
