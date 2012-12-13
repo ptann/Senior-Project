@@ -1,0 +1,46 @@
+
+
+  int led = 13;
+  int servo = 9;
+  unsigned int Remoteinput;
+  
+  
+void setup(){
+  Serial.begin(9600);
+  Serial.flush();
+  digitalWrite(A4, HIGH); // set pins as input
+  digitalWrite(A3, HIGH);
+  digitalWrite(A2, HIGH);
+  digitalWrite(A1, HIGH);
+  digitalWrite(A0, HIGH);
+
+  pinMode(led, OUTPUT);
+ pinMode(servo, OUTPUT); 
+}
+
+void loop(){
+  digitalWrite(led, HIGH);
+  digitalWrite(servo, HIGH);
+  
+  if (digitalRead (A0) == HIGH)
+   Remoteinput = Remoteinput + 1;
+  if (digitalRead (A1) == HIGH)
+    Remoteinput = Remoteinput + 2;
+  if (digitalRead (A2) == HIGH)
+    Remoteinput = Remoteinput + 4;
+  if (digitalRead(A3) == HIGH)
+     Remoteinput = Remoteinput + 8;
+  if (digitalRead (A4) == HIGH)
+     Remoteinput = Remoteinput + 16;
+     
+  Serial.println(Remoteinput);
+ 
+  if(Remoteinput == 15)
+     digitalWrite(led, LOW); // turn the LED on (HIGH is the voltage level)  
+  if(Remoteinput == 15)
+     digitalWrite(servo, LOW);  
+    
+ 
+  Serial.flush();
+  Remoteinput = 0;
+}
