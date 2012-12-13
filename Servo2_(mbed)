@@ -1,0 +1,30 @@
+#include "mbed.h"
+
+PwmOut PWM1(p21);
+DigitalOut data(p23);
+DigitalOut myled1(LED1);
+DigitalOut myled2(LED2);
+DigitalOut myled3(LED3);
+DigitalOut myled4(LED4);
+
+int main() 
+{
+   for(;;)
+   {
+   PWM1.period(0.010);     //pulse width period
+   PWM1=(0.5);               //duty cycle
+   wait(3.0);   
+   PWM1.period(0.000);     //pulse width period
+   PWM1=(0.5);               //duty cycle
+   wait(0.5);
+   PWM1.period(0.010);     //pulse width period
+   PWM1=(0.1);               //duty cycle
+   wait(3.0);  
+   PWM1.period(0.000);     //pulse width period
+   PWM1=(0.5);               //duty cycle
+   wait(0.5);
+   }
+   
+  }
+
+
