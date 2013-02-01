@@ -1,0 +1,140 @@
+#include <Servo.h>
+Servo servoMain;
+
+#define ECHOPIN 11                            // Pin to receive echo pulse
+#define TRIGPIN 12                            // Pin to send trigger pulse
+
+
+  int pos = 0;
+  int servo = 9;
+  const int buttonPin1 = 3;
+  const int buttonPin2 = 2; 
+  int buttonState1 = 0;
+  int buttonState2 = 0;
+  int distance = pulseIn(ECHOPIN, HIGH);        // Read in times pulse-
+  int led = 10;
+  // int
+  //int shadow = ;
+  float x;
+  float y;
+  float t;
+  unsigned int Remoteinput;
+  Servo myservo;
+  
+void setup(){
+  Serial.begin(9600);
+  digitalWrite(A4, HIGH); // set pins as input
+  digitalWrite(A3, HIGH);
+  digitalWrite(A2, HIGH);
+  digitalWrite(A1, HIGH);
+  digitalWrite(A0, HIGH);
+  pinMode(ECHOPIN, INPUT);
+  pinMode(TRIGPIN, OUTPUT);
+  pinMode(led, OUTPUT); 
+  servoMain.attach(6); // servo on digital pin 10 
+  sensor_read; // Measures the distance to the ground
+  x = distance; // Takes the distance at the begining and stores it
+}
+
+void loop()
+{
+  //Auto code
+  buttonState2 = digitalRead(buttonPin2);
+  while (buttonState2 == HIGH)
+  {
+       sensor_read;                               // Wait 50mS before next ranging
+    if (distance <= x) // If less then x then sensor will activate below functions.
+      {
+      digitalWrite(led, LOW);   // turn the LED on (HIGH is the voltage level)
+      for (;;)
+        {  
+      bird_servo;
+        }
+      }
+  
+    if (distance >= x) // If more then x then activates below functions
+      {
+        pan_tilt; // activates pan and tilt
+        digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
+        servoMain.write(0);  // Stop
+        delay(1000);
+      }
+  }
+  
+  // Remote code
+  {
+    digitalWrite(led, HIGH);
+    buttonState1 = digitalRead(buttonPin1);
+
+  //digitalWrite(servo, HIGH);
+      while (buttonState1 == HIGH)   
+      if (digitalRead (A0) == HIGH)
+        Remoteinput = Remoteinput + 1;
+      if (buttonState1 == HIGH) 
+      if (digitalRead (A1) == HIGH)
+        Remoteinput = Remoteinput + 2;
+      if (buttonState1 == HIGH) 
+      if (digitalRead (A2) == HIGH)
+        Remoteinput = Remoteinput + 4;
+      if (buttonState1 == HIGH) 
+      if (digitalRead(A3) == HIGH)
+        Remoteinput = Remoteinput + 8;
+      if (buttonState1 == HIGH) 
+      if (digitalRead (A4) == HIGH)
+        Remoteinput = Remoteinput + 16;
+     
+    Serial.println(Remoteinput);
+      if (Remoteinput == 23)
+        { 
+         pan_tilt;
+        }
+    Serial.flush();
+    Remoteinput = 0;
+  }
+}
+
+void sensor_read()
+{
+  digitalWrite(TRIGPIN, LOW);                   // Set the trigger pin to low for 2uS
+  delayMicroseconds(2);
+  digitalWrite(TRIGPIN, HIGH);                  // Send a 10uS high to trigger ranging
+  delayMicroseconds(10);
+  digitalWrite(TRIGPIN, LOW);                   // Send pin low again
+  distance= distance/58;                        // Calculate distance from time of pulse
+  Serial.println(distance);                     
+  delay(50);  
+}
+
+void bird_servo()
+{
+    servoMain.write(45);  // Turn Servo Left 
+    delay(t);
+    servoMain.write(0);  // Stop
+    delay(1000);
+    servoMain.write(135);  // Turn Servo Right
+    delay(t);
+}
+
+void servo_adj()
+{
+ y=x*cos(30);
+ y=y/2;
+ t=y;
+ t=t*200;
+}
+
+void pan_tilt()
+{
+        for(pos = 0; pos < 90; pos += 1)  // goes from 0 degrees to 180 degrees 
+          {                                  // in steps of 1 degree 
+            myservo.write(pos);              // tell servo to go to position in variable 'pos' 
+            delay(15);    // waits 15ms for the servo to reach the position
+            digitalWrite(10, LOW);
+          } 
+  
+        for(pos = 90; pos>=1; pos-=1)     // goes from 180 degrees to 0 degrees 
+          {                                
+          myservo.write(pos);              // tell servo to go to position in variable 'pos' 
+          delay(15);                       // waits 15ms for the servo to reach the position  
+          } 
+}
